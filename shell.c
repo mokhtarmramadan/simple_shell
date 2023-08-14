@@ -4,6 +4,8 @@
 #include <string.h>
 #include<sys/wait.h>
 
+int check_space(char *buff);
+
 /**
  * main - Entry point
  * Return: 0 (success)
@@ -15,7 +17,7 @@ int main(void)
 	size_t size = 100;
 	pid_t pid;
 
-	delim = "\n";
+	delim = " \n";
 	buffer = malloc(sizeof(char) * size);
 	if (buffer == NULL)
 	{
@@ -24,8 +26,17 @@ int main(void)
 	}
 	while (1)
 	{
-		printf("#cisfun$ ");
+		if (isatty(0) == 1)
+			printf("#cisfun$ ");
 		number = getline(&buffer, &size, stdin);
+		if (check_space(buffer) == 0)
+		{
+			if (buffer != NULL)
+			{
+				free(buffer);
+			}
+			continue;
+		}
 		if (number == EOF || number == -1)
 		{
 			free(buffer);
@@ -34,6 +45,7 @@ int main(void)
 		}
 		token[0] = strtok(buffer, delim);
 		token[1] = NULL;
+
 		pid = fork();
 		if (pid == 0)
 		{
@@ -46,8 +58,28 @@ int main(void)
 			}
 		}
 		else
+		{
 			wait(NULL);
+		}
 	}
 	free(buffer);
 	return (0);
+}
+
+int check_space(char *buff)
+{
+        int i;
+
+        for (i = 0; i < strlen(buff) - 1; i++)
+        {
+                if (buff[i] == ' ')
+                {
+                        continue;
+                }
+                else
+                {
+                        return (1);
+                }
+        }
+        return (0);
 }
