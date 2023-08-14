@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <sys/wait.h>
-#include "main.h"
+#include<sys/wait.h>
 
 int main(void)
 {
@@ -14,7 +13,7 @@ int main(void)
 	char *delim;
 	pid_t pid;
 	
-	delim = " ";
+	delim = "\n";
 	size = 100;
 	buffer = malloc(sizeof(char) * size);
 	if (buffer == NULL)
@@ -22,29 +21,34 @@ int main(void)
 		perror("Failed\n");
 		exit(0);
 	}
-	while (1)
+	while(1)
 	{
+		printf("#cisfun$ ");
+		number = getline(&buffer, &size, stdin);
+		if (number == EOF || number == -1)
+		{
+			free(buffer);
+			write(0, "\n", 2);
+			exit(0);
+		}
+		token[0] = strtok(buffer, delim);
+		token[1] = NULL;
 		pid = fork();
 		if (pid == 0)
 		{
-			number = 0;
-			printf("#cisfun$ ");
-			number = getline(&buffer, &size, stdin);
+			number = execve(token[0], token, NULL);
 			if (number == -1)
 			{
-				free (buffer);
-				_exit (0);
+				free(buffer);
+				perror("fail:");
+				exit(0);
 			}
-			token[0] = strtok(buffer, delim);
-			token[1] = NULL;
-			message(execve(token[0], token, NULL));
 		}
 		else
-		{
+		{	
 			wait(NULL);
 		}
 	}
 	free(buffer);
 	return (0);
 }
-
