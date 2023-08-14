@@ -4,24 +4,25 @@
 #include <string.h>
 #include<sys/wait.h>
 
+/**
+ * main - Entry point
+ * Return: 0 (success)
+ **/
 int main(void)
 {
-	char *buffer;
+	char *buffer, *token[1], *delim;
 	int number;
-	size_t size;
-	char *token[1];
-	char *delim;
+	size_t size = 100;
 	pid_t pid;
-	
+
 	delim = "\n";
-	size = 100;
 	buffer = malloc(sizeof(char) * size);
 	if (buffer == NULL)
 	{
-		perror("Failed\n");
+		perror(NULL);
 		exit(0);
 	}
-	while(1)
+	while (1)
 	{
 		printf("#cisfun$ ");
 		number = getline(&buffer, &size, stdin);
@@ -40,14 +41,12 @@ int main(void)
 			if (number == -1)
 			{
 				free(buffer);
-				perror("fail:");
+				perror("./shell");
 				exit(0);
 			}
 		}
 		else
-		{	
 			wait(NULL);
-		}
 	}
 	free(buffer);
 	return (0);
