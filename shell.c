@@ -18,31 +18,22 @@ int main(void)
 	pid_t pid;
 
 	delim = " \n";
-	buffer = malloc(sizeof(char) * size);
-	if (buffer == NULL)
-	{
-		perror(NULL);
-		exit(0);
-	}
+	buffer == NULL;
 	while (1)
 	{
 		if (isatty(0) == 1)
 			printf("#cisfun$ ");
 		number = getline(&buffer, &size, stdin);
-		if (check_space(buffer) == 0)
-		{
-			if (buffer != NULL)
-			{
-				free(buffer);
-			}
-			continue;
-		}
 		if (number == EOF || number == -1)
 		{
 			free(buffer);
 			write(0, "\n", 2);
 			exit(0);
 		}
+		if (check_space(buffer) == 0)
+		{
+			continue;
+ 		}
 		token[0] = strtok(buffer, delim);
 		token[1] = NULL;
 
