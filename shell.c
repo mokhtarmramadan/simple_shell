@@ -5,6 +5,7 @@
 #include<sys/wait.h>
 
 int check_space(char *buff);
+char *parce(char *s);
 
 /**
  * main - Entry point
@@ -12,13 +13,13 @@ int check_space(char *buff);
  **/
 int main(void)
 {
-	char *buffer, *token[1], *delim;
-	int number;
+	char *arg[10], *buffer, *delim, *token;
+	int number, i;
 	size_t size = 100;
 	pid_t pid;
 
 	delim = " \n";
-	buffer == NULL;
+	buffer = NULL;
 	while (1)
 	{
 		if (isatty(0) == 1)
@@ -34,13 +35,20 @@ int main(void)
 		{
 			continue;
  		}
-		token[0] = strtok(buffer, delim);
-		token[1] = NULL;
 
+		token = strtok(buffer, delim);
+		arg[0] = parce(token);
+		i = 1;
+		while (token != NULL)
+		{
+			token = strtok(NULL, delim);
+			arg[i] = token;
+			i++;
+		}
 		pid = fork();
 		if (pid == 0)
 		{
-			number = execve(token[0], token, NULL);
+			number = execve(arg[0], arg, NULL);
 			if (number == -1)
 			{
 				free(buffer);
@@ -57,9 +65,14 @@ int main(void)
 	return (0);
 }
 
+/**
+ * check_space - checks if the input is all spaces
+ * @buff: string input
+ * Return: 0 if all spaces
+ */
 int check_space(char *buff)
 {
-        int i;
+        size_t i;
 
         for (i = 0; i < strlen(buff) - 1; i++)
         {
@@ -73,4 +86,31 @@ int check_space(char *buff)
                 }
         }
         return (0);
+}
+
+/**
+ * parce - adds /bin/ if needed
+ * @s: string passed
+ * Return: a new string with /bin/ if needec
+ */
+char *parce(char *s)
+{
+	char *arg;
+	int len;
+
+	if (strstr(s, "/bin/") != NULL)
+	{
+		return (s);
+	}
+	else
+	{
+		len = strlen(s) + 5;
+		arg = malloc(sizeof(char) * len);
+		if (arg == NULL)
+		{
+			return (NULL);
+		}
+		strcpy(arg, "/bin/");
+		return (strcat(arg, s));
+	}
 }
