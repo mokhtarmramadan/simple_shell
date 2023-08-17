@@ -24,6 +24,10 @@ int main(void)
 			write(0, "\n", 2);
 			exit(0);
 		}
+		if (strcmp(buffer, "exit\n") == 0)
+		{
+			exit(0);
+		}
 		if (check_space(buffer) == 0)
 		{
 			continue;

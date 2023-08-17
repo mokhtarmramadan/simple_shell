@@ -10,5 +10,6 @@
 
 int check_space(char *buff);
 char *parce(char *s);
+char *conatnte(char *buffer);
 
 #endif /* #ifndef _MAIN_H_ */
