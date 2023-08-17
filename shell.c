@@ -34,10 +34,9 @@ int main(void)
  		}
 
 		token = strtok(buffer, delim);
-		arg[0] = parce(token);
+		arg[0] = token;
 		if (arg[0] == NULL)
 		{
-			free(arg[0]);
 			free(buffer);
 			exit(0);
 		}
@@ -58,19 +57,16 @@ int main(void)
 			number = execve(arg[0], arg, NULL);
 			if (number == -1)
 			{
-				free(arg[0]);
 				free(buffer);
 				perror("./shell");
 				exit(0);
 			}
-			free(arg[0]);
 		}
 		else
 		{
 			wait(NULL);
 		}
 	}
-	free(arg[0]);
 	free(buffer);
 	return (0);
 }
