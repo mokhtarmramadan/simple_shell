@@ -1,11 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include<sys/wait.h>
-
-int check_space(char *buff);
-char *parce(char *s);
+#include "main.h"
 
 /**
  * main - Entry point
@@ -38,6 +31,12 @@ int main(void)
 
 		token = strtok(buffer, delim);
 		arg[0] = parce(token);
+		if (arg[0] == NULL)
+		{
+			free(arg[0]);
+			free(buffer);
+			exit(0);
+		}
 		i = 1;
 		while (token != NULL)
 		{
@@ -45,72 +44,30 @@ int main(void)
 			arg[i] = token;
 			i++;
 		}
-		pid = fork();
+		if (access(arg[0], F_OK)  == 0)
+		{
+			pid = fork();
+		}
+
 		if (pid == 0)
 		{
 			number = execve(arg[0], arg, NULL);
 			if (number == -1)
 			{
+				free(arg[0]);
 				free(buffer);
 				perror("./shell");
 				exit(0);
 			}
+			free(arg[0]);
 		}
 		else
 		{
 			wait(NULL);
 		}
 	}
+	free(arg[0]);
 	free(buffer);
 	return (0);
 }
 
-/**
- * check_space - checks if the input is all spaces
- * @buff: string input
- * Return: 0 if all spaces
- */
-int check_space(char *buff)
-{
-        size_t i;
-
-        for (i = 0; i < strlen(buff) - 1; i++)
-        {
-                if (buff[i] == ' ')
-                {
-                        continue;
-                }
-                else
-                {
-                        return (1);
-                }
-        }
-        return (0);
-}
-
-/**
- * parce - adds /bin/ if needed
- * @s: string passed
- * Return: a new string with /bin/ if needec
- */
-char *parce(char *s)
-{
-	char *arg;
-	int len;
-
-	if (strstr(s, "/bin/") != NULL)
-	{
-		return (s);
-	}
-	else
-	{
-		len = strlen(s) + 5;
-		arg = malloc(sizeof(char) * len);
-		if (arg == NULL)
-		{
-			return (NULL);
-		}
-		strcpy(arg, "/bin/");
-		return (strcat(arg, s));
-	}
-}
