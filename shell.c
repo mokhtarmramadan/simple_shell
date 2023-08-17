@@ -26,7 +26,7 @@ int main(void)
 		}
 		if (strcmp(buffer, "exit\n") == 0)
 		{
-			exit(0);
+			_exit(0);
 		}
 		if (check_space(buffer) == 0)
 		{
