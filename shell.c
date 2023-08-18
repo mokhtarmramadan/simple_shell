@@ -4,13 +4,14 @@
  * main - Entry point
  * Return: 0 (success)
  **/
-int main(void)
+int main(int ac, char **av, char **env)
 {
 	char *arg[10], *buffer, *delim, *token;
 	int number, i;
 	size_t size = 100;
 	pid_t pid;
-
+	
+	av[ac - 2] = "shell"; 
 	delim = " \n";
 	buffer = NULL;
 	while (1)
@@ -18,20 +19,16 @@ int main(void)
 		if (isatty(0) == 1)
 			printf("#cisfun$ ");
 		number = getline(&buffer, &size, stdin);
-		if (number == EOF || number == -1)
+		switch(check_getline(number, buffer, env))
 		{
-			free(buffer);
-			write(0, "\n", 2);
-			exit(0);
+			case 0:
+				exit(0);
+			case 1:
+			case 2:
+				continue;
+			default:
+				break;
 		}
-		if (strcmp(buffer, "exit\n") == 0)
-		{
-			_exit(0);
-		}
-		if (check_space(buffer) == 0)
-		{
-			continue;
- 		}
 
 		token = strtok(buffer, delim);
 		arg[0] = token;
@@ -50,24 +47,23 @@ int main(void)
 		if (access(arg[0], F_OK)  == 0)
 		{
 			pid = fork();
-		}
-
-		if (pid == 0)
-		{
-			number = execve(arg[0], arg, NULL);
-			if (number == -1)
+		
+			if (pid == 0)
 			{
-				free(buffer);
-				perror("./shell");
-				exit(0);
+				number = execve(arg[0], arg, NULL);
+				if (number == -1)
+				{
+					free(buffer);
+					perror("./khara");
+					exit(0);
+				}
 			}
-		}
-		else
-		{
-			wait(NULL);
+			else
+			{
+				wait(NULL);
+			}
 		}
 	}
 	free(buffer);
 	return (0);
 }
-

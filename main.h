@@ -11,5 +11,7 @@
 int check_space(char *buff);
 char *parce(char *s);
 char *conatnte(char *buffer);
+void print_env(char **env);
+int check_getline(int number, char *buffer, char **env);
 
 #endif /* #ifndef _MAIN_H_ */
