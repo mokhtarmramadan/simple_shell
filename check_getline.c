@@ -23,6 +23,7 @@ int check_getline(int number, char *buffer, char **env)
 	else if (strcmp(buffer, "env\n") == 0)
 	{
 		print_env(env);
+		free(buffer);
 		return (1);
 	}
 	else if (check_space(buffer) == 0)

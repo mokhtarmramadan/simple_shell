@@ -2,24 +2,24 @@
 
 /**
  * main - Entry point
+ * @ac: command number
+ * @av: command line array
+ * @env: environment varaiables
  * Return: 0 (success)
  **/
-int main(int ac, char **av, char **env)
+int main(int ac __attribute__((unused)),
+		char **av __attribute__((unused)), char **env)
 {
-	char *arg[10], *buffer, *delim, *token;
-	int number, i;
+	char *arg[10], *buffer = NULL;
+	int number, i, pid;
 	size_t size = 100;
-	pid_t pid;
-	
-	av[ac - 2] = "shell"; 
-	delim = " \n";
-	buffer = NULL;
+
 	while (1)
 	{
 		if (isatty(0) == 1)
-			printf("#cisfun$ ");
+			printf("sash ");
 		number = getline(&buffer, &size, stdin);
-		switch(check_getline(number, buffer, env))
+		switch (check_getline(number, buffer, env))
 		{
 			case 0:
 				exit(0);
@@ -29,41 +29,21 @@ int main(int ac, char **av, char **env)
 			default:
 				break;
 		}
-
-		token = strtok(buffer, delim);
-		arg[0] = token;
-		if (arg[0] == NULL)
+		i = 0;
+		arg[0] = strtok(buffer, " \n");
+		while (arg[i] != NULL)
 		{
-			free(buffer);
-			exit(0);
-		}
-		i = 1;
-		while (token != NULL)
-		{
-			token = strtok(NULL, delim);
-			arg[i] = token;
 			i++;
+			arg[i] = strtok(NULL, " \n");
 		}
 		if (access(arg[0], F_OK)  == 0)
 		{
 			pid = fork();
-		
 			if (pid == 0)
-			{
-				number = execve(arg[0], arg, NULL);
-				if (number == -1)
-				{
-					free(buffer);
-					perror("./khara");
-					exit(0);
-				}
-			}
+				execve(arg[0], arg, NULL);
 			else
-			{
 				wait(NULL);
-			}
 		}
 	}
-	free(buffer);
 	return (0);
 }
