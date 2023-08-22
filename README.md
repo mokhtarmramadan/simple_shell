@@ -18,6 +18,14 @@ you can use that command to list all files and directories in your folder or dir
 Displays the environment variable
 - `exit` [exitstatus]
 Exit from the program with exitstatus value. 0 by default.
-
-
-
+## Files of simple shell:
+- `shell.c`:
+That is the main file of the project it has main code of the project which is:
+	- code of the promot which has the word `sash`
+	- code of `getline` function which get the input from the user
+	- code of `check_getline` function which will check some important points:
+		1. check if the `getline` function succeed or not
+		2. check if the buffer array which has the input of the user has any spaces
+		3. check if the command is `env` it will print the environment variable
+	- code of arguments which are exist in any command for example `ls -l` or `touch Mo.c`
+	- code of `execute` system call which will execute any command
