@@ -29,3 +29,5 @@ That is the main file of the project it has main code of the project which is:
 		3. check if the command is `env` it will print the environment variable
 	- code of arguments which are exist in any command for example `ls -l` or `touch Mo.c`
 	- code of `execute` system call which will execute any command
+- `print_env.c`:
+  	It will print the environment in form of `key = value`
