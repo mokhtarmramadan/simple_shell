@@ -36,3 +36,12 @@ That is the main file of the project it has main code of the project which is:
 	2. check if the buffer array which has the input of the user has any spaces
 	3. check if the command is `env` it will print the environment variable
 	4. check if the input of the user is `exit` it will exit the program
+- `check_getline.c`:
+	1. check if the `getline` function succeed or not
+	2. check if the buffer array which has the input of the user has any spaces
+	3. check if the command is `env` it will print the environment variable
+	4. check if the input of the user is `exit` it will exit the program
+- `check_space.c`:
+	Check if the input is only spaces without any letters or words
+	if that function will find any letter it will return 1
+
