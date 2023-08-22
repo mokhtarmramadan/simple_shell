@@ -44,4 +44,6 @@ That is the main file of the project it has main code of the project which is:
 - `check_space.c`:
 	Check if the input is only spaces without any letters or words
 	if that function will find any letter it will return 1
-
+- `contributors` :
+	`Ahmed Elsharkwi`
+	`Mokhtar M. Ramadan`
