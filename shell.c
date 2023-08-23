@@ -22,7 +22,7 @@ int main(int ac __attribute__((unused)),
 		switch (check_getline(number, buffer, env))
 		{
 			case 0:
-				exit(2);
+				exit(0);
 			case 1:
 			case 2:
 				continue;
