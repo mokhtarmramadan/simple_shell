@@ -18,12 +18,12 @@ int check_getline(int number, char *buffer, char **env)
 
 	if (strcmp(buffer, "exit\n") == 0)
 	{
+		free(buffer);
 		return (0);
 	}
 	else if (strcmp(buffer, "env\n") == 0)
 	{
 		print_env(env);
-		free(buffer);
 		return (1);
 	}
 	else if (check_space(buffer) == 0)
